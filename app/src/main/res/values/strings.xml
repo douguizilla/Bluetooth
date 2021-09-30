@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Bluetooth</string>
+    <string name="cancel">cancel</string>
+    <string name="enviar">enviar</string>
 </resources>
