@@ -39,8 +39,13 @@ class BtThreadCommunication(private val uiHandler: Handler) {
         }catch (e: IOException){
             e.printStackTrace()
         }
+    }
+
+    fun sendMessage(message: String){
+        outputStream?.writeUTF(message)
 
     }
+
 
 
 }
