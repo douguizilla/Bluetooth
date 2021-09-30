@@ -46,6 +46,10 @@ class BtThreadCommunication(private val uiHandler: Handler) {
 
     }
 
-
+    companion object{
+        const val MSG_TEXT = 0
+        const val MSG_CONNECTED = 1
+        const val MSG_DISCONNECTED = 2
+    }
 
 }
