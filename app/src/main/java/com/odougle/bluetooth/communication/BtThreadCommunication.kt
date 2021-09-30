@@ -27,4 +27,20 @@ class BtThreadCommunication(private val uiHandler: Handler) {
             uiHandler.obtainMessage(MSG_DISCONNECTED, "${e.message} #3")?.sendToTarget()
         }
     }
+
+    fun closeConnection(){
+        try{
+            inputStream?.close()
+        }catch (e: IOException){
+            e.printStackTrace()
+        }
+        try{
+            outputStream?.close()
+        }catch (e: IOException){
+            e.printStackTrace()
+        }
+
+    }
+
+
 }
