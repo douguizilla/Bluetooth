@@ -14,8 +14,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.core.app.ActivityCompat
 import com.odougle.bluetooth.communication.BtThread
 import com.odougle.bluetooth.communication.BtThreadClient
@@ -177,11 +179,33 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, R.string.msg_no_devices_found, Toast.LENGTH_SHORT).show()
         }
     }
+
     private fun startClientThread(index: Int){
         stopAll()
         val uiHandler = UiHandler(this::onMessageReceived, this::onConnectionChanged)
         btThread = BtThreadClient(remoteDevices[index], uiHandler)
         btThread?.startThread()
+    }
+
+    private fun showProgress(@StringRes message: Int, timeout: Long = 0, cancelClick: (() -> Unit)? = null){
+        binding.apply {
+            vwProgressContainer.visibility = View.VISIBLE
+            txtProgressMessage.setText(message)
+            btnCancel.setOnClickListener{
+                hideProgress()
+                cancelClick?.invoke()
+            }
+        }
+        if(timeout > 0){
+            binding.vwProgressContainer.postDelayed({
+                hideProgress()
+                cancelClick?.invoke()
+            }, timeout)
+        }
+    }
+
+    private fun hideProgress(){
+        binding.vwProgressContainer.visibility = View.GONE
     }
 
     companion object{
