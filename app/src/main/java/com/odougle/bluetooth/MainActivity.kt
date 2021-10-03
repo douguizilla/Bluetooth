@@ -143,7 +143,7 @@ class MainActivity : AppCompatActivity() {
         startActivityForResult(discoverableIntent, BT_VISIBLE)
     }
 
-    private fun statServerThread(){
+    private fun startServerThread(){
         showProgress(R.string.msg_server, BT_DISCOVERY_TIME.toLong() * 1000, cancelClick = {
             stopAll()
         })
