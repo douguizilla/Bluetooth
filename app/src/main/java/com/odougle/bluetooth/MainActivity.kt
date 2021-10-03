@@ -2,6 +2,7 @@ package com.odougle.bluetooth
 
 import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.content.BroadcastReceiver
@@ -146,6 +147,34 @@ class MainActivity : AppCompatActivity() {
         val uiHandler = UiHandler(this::onMessageReceived, this::onConnectionChanged)
         btThread = BtThreadServer(btAdapter, uiHandler)
         btThread?.startThread()
+    }
+
+    private fun startClient(){
+        showProgress(R.string.msg_searching_server, BT_DISCOVERY_TIME.toLong() * 1000L){
+            btAdapter?.cancelDiscovery()
+            stopAll()
+        }
+        remoteDevices?.clear()
+        btAdapter?.startDiscovery()
+    }
+
+    private fun showDiscoveredDevices(devices: List<BluetoothDevice>){
+        hideProgress()
+        if(devices.isNotEmpty()){
+            val devicesFound = arrayOfNulls<String>(devices.size)
+            for (i in devices.indices){
+                devicesFound[i] = devices[i].name
+            }
+            val dialog = AlertDialog.Builder(this)
+                .setTitle(R.string.devices_found)
+                .setSingleChoiceItems(devicesFound, -1){ dialog, which ->
+                    startClientThread(which)
+                    dialog.dismiss()
+                }.create()
+            dialog.show()
+        }else{
+            Toast.makeText(this, R.string.msg_no_devices_found, Toast.LENGTH_SHORT).show()
+        }
     }
 
     companion object{
