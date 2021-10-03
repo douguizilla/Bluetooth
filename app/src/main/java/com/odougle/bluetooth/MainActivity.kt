@@ -17,7 +17,9 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.odougle.bluetooth.communication.BtThread
+import com.odougle.bluetooth.communication.BtThreadServer
 import com.odougle.bluetooth.databinding.ActivityMainBinding
+import com.odougle.bluetooth.handler.UiHandler
 
 class MainActivity : AppCompatActivity() {
 
@@ -129,12 +131,21 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun startClient() {
+    private fun startServer() {
         val discoverableIntent= Intent(
             BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE
         )
         discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, BT_DISCOVERY_TIME)
         startActivityForResult(discoverableIntent, BT_VISIBLE)
+    }
+
+    private fun statServerThread(){
+        showProgress(R.string.msg_server, BT_DISCOVERY_TIME.toLong() * 1000, cancelClick = {
+            stopAll()
+        })
+        val uiHandler = UiHandler(this::onMessageReceived, this::onConnectionChanged)
+        btThread = BtThreadServer(btAdapter, uiHandler)
+        btThread?.startThread()
     }
 
     companion object{
