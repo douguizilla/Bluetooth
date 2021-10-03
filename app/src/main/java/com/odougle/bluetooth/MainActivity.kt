@@ -130,7 +130,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startClient() {
-        TODO("Not yet implemented")
+        val discoverableIntent= Intent(
+            BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE
+        )
+        discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, BT_DISCOVERY_TIME)
+        startActivityForResult(discoverableIntent, BT_VISIBLE)
     }
 
     companion object{
