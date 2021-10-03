@@ -208,6 +208,20 @@ class MainActivity : AppCompatActivity() {
         binding.vwProgressContainer.visibility = View.GONE
     }
 
+    private fun onMessageReceived(message: String){
+        messagesAdapter?.add(message)
+        messagesAdapter?.notifyDataSetChanged()
+    }
+
+    private fun onConnectionChanged(connected: Boolean){
+        hideProgress()
+        if(connected){
+            Toast.makeText(this, R.string.msg_connected, Toast.LENGTH_SHORT).show()
+        }else{
+            Toast.makeText(this, R.string.msg_disconnected, Toast.LENGTH_SHORT).show()
+        }
+    }
+
     companion object{
         private const val BT_ACTIVATE = 0
         private const val BT_VISIBLE = 1
