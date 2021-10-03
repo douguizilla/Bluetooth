@@ -222,6 +222,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun sendButtonClick(){
+        val msg = binding.edtMessage.text.toString()
+        try {
+            btThread?.sendMessage(msg)
+            messagesAdapter?.add(getString(R.string.my_message, msg))
+            messagesAdapter?.notifyDataSetChanged()
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
+        binding.edtMessage.text.clear()
+    }
+
     companion object{
         private const val BT_ACTIVATE = 0
         private const val BT_VISIBLE = 1
