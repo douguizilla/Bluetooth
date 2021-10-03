@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.odougle.bluetooth.communication.BtThread
+import com.odougle.bluetooth.communication.BtThreadClient
 import com.odougle.bluetooth.communication.BtThreadServer
 import com.odougle.bluetooth.databinding.ActivityMainBinding
 import com.odougle.bluetooth.handler.UiHandler
@@ -175,6 +176,12 @@ class MainActivity : AppCompatActivity() {
         }else{
             Toast.makeText(this, R.string.msg_no_devices_found, Toast.LENGTH_SHORT).show()
         }
+    }
+    private fun startClientThread(index: Int){
+        stopAll()
+        val uiHandler = UiHandler(this::onMessageReceived, this::onConnectionChanged)
+        btThread = BtThreadClient(remoteDevices[index], uiHandler)
+        btThread?.startThread()
     }
 
     companion object{
